@@ -35,42 +35,6 @@ struct menu_ctx_s
 	const struct menu_item_s *items;
 };
 
-struct menu_item_s
-{
-	const char *name;
-	const char *help;
-	enum menu_op_e
-	{
-		/* Opens a sub menu. */
-		MENU_SUB_MENU,
-
-		/* Executes a function. */
-		MENU_EXEC_FUNC,
-
-		/* Sets the value of an integer. */
-		MENU_SET_VAL
-	} op;
-
-	union param_u
-	{
-		/* Pointer to sub menu. */
-		menu_ctx *sub_menu;
-
-		/* Pointer to function to execute if item selected. */
-		struct exec_func_s
-		{
-			void *ctx;
-			void (*func)(void *ctx);
-		} exec_func;
-
-		/* Pointer to integer to set. */
-		struct set_val_s
-		{
-			int *val;
-		} set_val;
-	} param;
-};
-
 menu_ctx *menu_alloc(void *(*menu_malloc)(size_t size))
 {
 	return menu_malloc(sizeof(menu_ctx));
