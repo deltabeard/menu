@@ -105,6 +105,7 @@ int main(int argc, char *argv[])
 	while (run) {
 		SDL_Event ev;
 		SDL_Rect floc = { .w = 1, .h = 1 };
+		static int pressed = 1;
 
 		while (SDL_PollEvent(&ev) != 0)
 		{
@@ -115,6 +116,8 @@ int main(int argc, char *argv[])
 
 			if(ev.key.repeat)
 				continue;
+
+			pressed = 1;
 
 			switch(ev.key.keysym.sym)
 			{
@@ -141,6 +144,13 @@ int main(int argc, char *argv[])
 				break;
 			}
 		};
+
+		if(pressed == 0)
+		{
+			SDL_RenderPresent(ren);
+			SDL_Delay(10);
+			continue;
+		}
 
 		SDL_SetRenderDrawColor(ren, c.r * 64, c.g * 64, c.b * 64, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(ren);
@@ -188,6 +198,7 @@ int main(int argc, char *argv[])
 
 		SDL_RenderPresent(ren);
 		SDL_Delay(10);
+		pressed = 0;
 	}
 
 	FontExit(font);
