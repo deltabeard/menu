@@ -13,10 +13,9 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
-#include <stdlib.h>
-#include <string.h>
-
 #include "menu.h"
+
+#include <stdlib.h>
 
 struct menu_ctx_s
 {
