@@ -1,10 +1,12 @@
 CFLAGS = -Wall -Wextra -Werror -std=c89 -pedantic -Og -g3
-TARGETS = menu.o ./test/test example
 
-all: $(TARGETS)
-example: example.c menu.o
+all: menu.o test/test examples
 menu.o: menu.c menu.h
-./test/test: ./test/test.c menu.o
+test/test: ./test/test.c menu.o
+examples:
+	$(MAKE) -C examples
 
 clean:
-	$(RM) $(TARGETS)
+	$(RM) menu.o ./test/test
+
+.PHONY: examples

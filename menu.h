@@ -94,8 +94,6 @@ typedef struct menu_item_s menu_item;
  * Add an item to a given menu. First item shown first in menu.
  */
 void menu_init(menu_ctx *menu, menu_ctx *parent, const char *title,
-		const char *help, unsigned long items_nmemb,
-		struct menu_item_s *items);
-void menu_set_items(menu_ctx *menu, unsigned long nmemb,
-		struct menu_item_s *items);
+		const char *help, unsigned long items_nmemb, menu_item *items);
+void menu_set_items(menu_ctx *menu, unsigned long nmemb, menu_item *items);
 menu_ctx *menu_instruct(menu_ctx *ctx, menu_instruction instr);
