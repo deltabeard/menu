@@ -81,6 +81,7 @@ menu_ctx *menu_instruct(menu_ctx *ctx, enum menu_instruction_e instr)
 				ctx->item_selected++;
 
 			break;
+
 		case MENU_INSTR_PARENT_MENU:
 			if(ctx->parent != NULL)
 				ret = ctx->parent;
@@ -106,8 +107,11 @@ menu_ctx *menu_instruct(menu_ctx *ctx, enum menu_instruction_e instr)
 				}
 
 				case MENU_SET_VAL:
-					*item->param.set_val.val = 0;
+				{
+					int val = item->param.set_val.val;
+					*item->param.set_val.set = val;
 					break;
+				}
 			}
 			break;
 		}

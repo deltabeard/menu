@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -Werror -std=c89 -pedantic
+CFLAGS = -Wall -Wextra -Werror -std=c89 -pedantic -Og -g3
 
 all: menu.o ./test/test
 menu.o: menu.c menu.h

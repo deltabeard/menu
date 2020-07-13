@@ -69,7 +69,8 @@ struct menu_item_s
 		/* Pointer to integer to set. */
 		struct set_val_s
 		{
-			int *val;
+			int val;
+			int *set;
 		} set_val;
 	} param;
 };
