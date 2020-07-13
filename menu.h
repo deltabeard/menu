@@ -18,7 +18,7 @@
 
 #define MENU_SELECT_ITEM(menu, sel)				\
 	do{							\
-		if(menu->items_nmemb < (sel - 1) && sel > 0)	\
+		if((sel - 1) < menu->items_nmemb)		\
 			menu->item_selected = sel;		\
 	}while(0)
 
