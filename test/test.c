@@ -21,7 +21,7 @@ void test_func(void)
 	unsigned l;
 
 	menu_ctx *m = menu_alloc(malloc);
-	struct menu_item_s items[] = {
+	static struct menu_item_s items[] = {
 		{ "Increment int", "help text", MENU_EXEC_FUNC, { NULL }},
 		{ "Decrement int", "help text", MENU_EXEC_FUNC, { NULL }},
 	};
@@ -49,6 +49,8 @@ void test_func(void)
 	/* Should be set to decrement. */
 	m = menu_instruct(m, MENU_INSTR_EXEC_ITEM);
 	lequal(i, 2);
+
+	menu_delete(m, free);
 }
 
 int main(void)
