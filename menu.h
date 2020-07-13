@@ -16,11 +16,24 @@
 #pragma once
 #include <stdlib.h>
 
+#define MENU_SELECT_ITEM(menu, sel)				\
+	do{							\
+		if(menu->items_nmemb < (sel - 1) && sel > 0)	\
+			menu->item_selected = sel;		\
+	}while(0)
+
+struct menu_ctx_s
+{
+	struct menu_ctx_s *parent;
+	const char *title;
+	const char *help;
+	unsigned long item_selected;
+	unsigned long items_nmemb;
+	const struct menu_item_s *items;
+};
 typedef struct menu_ctx_s menu_ctx;
 
 enum menu_instruction_e {
-	MENU_INSTR_NO_OP = 0,
-
 	/* Go back to the previous item.
 	 * Could be used when user presses UP. */
 	MENU_INSTR_PREV_ITEM,
@@ -37,6 +50,7 @@ enum menu_instruction_e {
 	 * Could be used when user presses ENTER. */
 	MENU_INSTR_EXEC_ITEM
 };
+typedef enum menu_instruction_e menu_instruction;
 
 struct menu_item_s
 {
@@ -74,12 +88,14 @@ struct menu_item_s
 		} set_val;
 	} param;
 };
+typedef struct menu_item_s menu_item;
 
-menu_ctx *menu_alloc(void *(*menu_malloc)(size_t size));
-menu_ctx *menu_create(menu_ctx *menu, menu_ctx *parent, const char *title,
+/**
+ * Add an item to a given menu. First item shown first in menu.
+ */
+void menu_init(menu_ctx *menu, menu_ctx *parent, const char *title,
 		const char *help, unsigned long items_nmemb,
 		struct menu_item_s *items);
-void menu_delete(menu_ctx *ctx, void (*menu_free)(void *ptr));
-menu_ctx *menu_set_items(menu_ctx *menu, unsigned long nmemb,
+void menu_set_items(menu_ctx *menu, unsigned long nmemb,
 		struct menu_item_s *items);
-menu_ctx *menu_instruct(menu_ctx *ctx, enum menu_instruction_e instr);
+menu_ctx *menu_instruct(menu_ctx *ctx, menu_instruction instr);

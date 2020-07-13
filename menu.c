@@ -17,58 +17,30 @@
 
 #include <stdlib.h>
 
-struct menu_ctx_s
-{
-	struct menu_ctx_s *parent;
-	const char *title;
-	const char *help;
-	unsigned long item_selected;
-	unsigned long items_nmemb;
-	const struct menu_item_s *items;
-};
-
-menu_ctx *menu_alloc(void *(*menu_malloc)(size_t size))
-{
-	return menu_malloc(sizeof(menu_ctx));
-}
-
-menu_ctx *menu_create(menu_ctx *menu, menu_ctx *parent, const char *title,
+void menu_init(menu_ctx *menu, menu_ctx *parent, const char *title,
 		const char *help, unsigned long items_nmemb,
 		struct menu_item_s *items)
 {
 	menu->parent = parent;
 	menu->title = title;
 	menu->help = help;
+	menu->item_selected = 0;
 	menu->items_nmemb = items_nmemb;
 	menu->items = items;
-	return menu;
 }
 
-void menu_delete(menu_ctx *ctx, void (*menu_free)(void *ptr))
-{
-	menu_free(ctx);
-	ctx = NULL;
-}
-
-/**
- * Add an item to a given menu. First item shown first in menu.
- */
-menu_ctx *menu_set_items(menu_ctx *menu, unsigned long nmemb,
+void menu_set_items(menu_ctx *menu, unsigned long nmemb,
 		struct menu_item_s *items)
 {
 	menu->items_nmemb = nmemb;
 	menu->items = items;
-	return menu;
 }
 
-menu_ctx *menu_instruct(menu_ctx *ctx, enum menu_instruction_e instr)
+menu_ctx *menu_instruct(menu_ctx *ctx, menu_instruction instr)
 {
 	menu_ctx *ret = ctx;
 	switch(instr)
 	{
-		case MENU_INSTR_NO_OP:
-			break;
-
 		case MENU_INSTR_PREV_ITEM:
 			if(ctx->item_selected > 0)
 				ctx->item_selected--;
