@@ -21,6 +21,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/* This was used to create menu.gif for the project readme. */
+//#define RECORD_FRAMES 1
+
 struct colours_s {
 	int r, g, b;
 };
@@ -115,19 +118,24 @@ int main(int argc, char *argv[])
 
 			switch(ev.key.keysym.sym)
 			{
+			case SDLK_s:
 			case SDLK_DOWN:
 				current = menu_instruct(current, MENU_INSTR_NEXT_ITEM);
 				break;
 
+			case SDLK_w:
 			case SDLK_UP:
 				current = menu_instruct(current, MENU_INSTR_PREV_ITEM);
 				break;
 
+			case SDLK_d:
+			case SDLK_SPACE:
 			case SDLK_RIGHT:
 			case SDLK_RETURN:
 				current = menu_instruct(current, MENU_INSTR_EXEC_ITEM);
 				break;
 
+			case SDLK_a:
 			case SDLK_LEFT:
 				current = menu_instruct(current, MENU_INSTR_PARENT_MENU);
 				break;
@@ -154,6 +162,29 @@ int main(int argc, char *argv[])
 
 			FontPrintToRenderer(font, current->items[i].name, &floc);
 		}
+
+#if defined(RECORD_FRAMES)
+		{
+			static SDL_Surface *surf = NULL;
+			static unsigned long num = 0;
+			char name[32];
+
+			if(surf == NULL)
+			{
+				surf = SDL_CreateRGBSurfaceWithFormat(0,
+						320, 240, 32,
+						SDL_PIXELFORMAT_RGBA32);
+			}
+
+			SDL_RenderReadPixels(ren, NULL, SDL_PIXELFORMAT_RGBA32,
+					surf->pixels, surf->pitch);
+
+			SDL_snprintf(name, sizeof(name), "%08lu.bmp", num);
+			num++;
+			SDL_SaveBMP(surf, name);
+			SDL_Delay(100);
+		}
+#endif
 
 		SDL_RenderPresent(ren);
 		SDL_Delay(10);
